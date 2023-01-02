@@ -1,0 +1,33 @@
+
+//input:
+//src width height
+
+<div id="container"></div>
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+	window.RufflePlayer.config = {
+	"logLevel": "debug",
+	//"menu": true,
+	//"contextMenu": true,
+	//"showSwfDownload": true,
+	};
+        let ruffle = window.RufflePlayer.newest();
+        let player = ruffle.createPlayer();
+        let container = document.getElementById("container");
+        container.appendChild(player);
+        player.load("/a/universe/universe.swf");
+//	setTimeout(() => {
+//	console.log(player);
+//	console.log(player.pause);
+//		player.pause();
+//	}, "10000");
+var oldConsole = {};
+oldConsole.log = console.log;
+console.log= function (arg) {
+    oldConsole.log('MY CONSOLE!!');
+    oldConsole.log(arg);
+}
+    });
+
+</script>
+<script src="/dist/ruffle.js"></script>
