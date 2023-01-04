@@ -9,7 +9,7 @@
  * 5) Done.
  */
 
-#include <unistd.h> // for fork()
+#include <unistd.h> // for fork() unlink close
 #include <stdio.h> // for printf
 #include <stdlib.h> // for exit()
 #include <sys/socket.h>
@@ -19,12 +19,9 @@
 #include <string.h>
 #include <errno.h>
 
-//#define SERVER_SOCK_PATH "/tmp/unix_sock.server"
 #define CLIENT_SOCK_PATH "/tmp/unix_sock.client"
 #define SERVER_SOCK_PATH "unix_sock.server"
-//#define CLIENT_SOCK_PATH "unix_sock.client"
 
-#define SERVER_MSG "HELLO FROM SERVER"
 #define CLIENT_MSG "HELLO FROM CLIENT"
 
 
