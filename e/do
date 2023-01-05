@@ -2,3 +2,5 @@
 inipath=`dpkg -L libapache2-mod-php | grep mods-available`
 echo ${inipath}
 sudo cp -i ./php_helloworld.ini ${inipath}
+phpenmod php_helloworld
+#phpdismod
