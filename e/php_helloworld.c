@@ -4,7 +4,7 @@
 // then include the header of your extension
 #include "php_helloworld.h"
 
-// register our function to the PHP API 
+// register our function to the PHP API
 // so that PHP knows, which functions are in this module
 zend_function_entry helloworld_php_functions[] = {
     PHP_FE(helloworld_php, NULL)
