@@ -1,9 +1,10 @@
 <?php
 
+helloworld_php();
+
 //this is also required
 //chmod o+w unix_sock.server
-
-system("/var/www/html/b.out");
+//system("/var/www/html/b.out");
 
 
 /*
