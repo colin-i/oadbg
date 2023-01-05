@@ -1,7 +1,8 @@
 
 cc a.c -o p/a.out
-cc b.c -o p/b.out
 ./www
 cd /var/www/html/b
 sudo chmod o+r p.php
 sudo ./a.out
+
+#cc b.c -o p/b.out

@@ -31,15 +31,15 @@ ZEND_GET_MODULE(helloworld_php)
 
 
 
-#include <unistd.h> // for fork() unlink close
-#include <stdio.h> // for printf
-#include <stdlib.h> // for exit()
-#include <sys/socket.h>
+//#include <unistd.h> // for fork() unlink close
+//#include <stdio.h> // for printf
+//#include <stdlib.h> // for exit()
+//#include <sys/socket.h>
 #include <sys/un.h> // socket in Unix
 
 // for print error message
-#include <string.h>
-#include <errno.h>
+//#include <string.h>
+//#include <errno.h>
 
 #define CLIENT_SOCK_PATH "/tmp/unix_sock.client"
 #define SERVER_SOCK_PATH "unix_sock.server"

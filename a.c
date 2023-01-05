@@ -216,9 +216,9 @@ int main() {
 #define CLIENT_MSG "HELLO FROM CLIENT"
 
 
-        /**************************************************/
-        /* Open a client socket (same type as the server) */
-        /**************************************************/
+        //**************************************************
+        //* Open a client socket (same type as the server) *
+        //**************************************************
         int client_sock = socket(AF_UNIX, SOCK_STREAM, 0);
         if (client_sock == -1)
         {
@@ -226,9 +226,9 @@ int main() {
             exit(1);
         }
 
-        /********************************************/
-        /* Bind client to an address on file system */
-        /********************************************/
+        //********************************************
+        //* Bind client to an address on file system *
+        //********************************************
         // Note: this binding could be skip if we want only send data to server without receiving
         client_addr.sun_family = AF_UNIX;
         strcpy(client_addr.sun_path, CLIENT_SOCK_PATH);
@@ -243,9 +243,9 @@ int main() {
             exit(1);
         }
 
-        /****************************************/
-        /* Set server address and connect to it */
-        /****************************************/
+        //****************************************
+        //* Set server address and connect to it *
+        //****************************************
         server_addr.sun_family = AF_UNIX;
         strcpy(server_addr.sun_path, SERVER_SOCK_PATH);
         rc = connect(client_sock, (struct sockaddr*)&server_addr, len);
@@ -257,9 +257,9 @@ int main() {
         }
         printf("CLIENT: Connected to server.\n");
 
-        /**************************/
-        /* Send message to server */
-        /**************************/
+        //**************************
+        //* Send message to server *
+        //**************************
         memset(buf, 0, sizeof(buf));
         strcpy(buf, CLIENT_MSG);
         rc = send(client_sock, buf, sizeof(buf), 0);
@@ -271,9 +271,9 @@ int main() {
         }
         printf("CLIENT: Sent a message to server.\n");
 
-        /**************************************/
-        /* Listen to the response from server */
-        /**************************************/
+        //**************************************
+        //* Listen to the response from server *
+        //**************************************
         printf("CLIENT: Wait for respond from server...\n");
         memset(buf, 0, sizeof(buf));
         rc = recv(client_sock, buf, sizeof(buf), 0);
