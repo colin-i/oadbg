@@ -4,11 +4,16 @@
 // then include the header of your extension
 #include "php_helloworld.h"
 
+ZEND_BEGIN_ARG_INFO(hello_arginfo, 0)
+//    ZEND_ARG_INFO(0, str)
+ZEND_END_ARG_INFO()
+
 // register our function to the PHP API
 // so that PHP knows, which functions are in this module
 zend_function_entry helloworld_php_functions[] = {
-    PHP_FE(helloworld_php, NULL)
-    {NULL, NULL, NULL}
+	PHP_FE(helloworld_php, hello_arginfo)
+//    {NULL, NULL, NULL}
+	PHP_FE_END
 };
 
 // some pieces of information about our module
