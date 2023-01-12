@@ -10,7 +10,7 @@ importx "gtk_application_window_new" gtk_application_window_new
 importx "gtk_window_set_title" gtk_window_set_title
 importx "gtk_widget_show" gtk_widget_show
 
-function activate(sd app)
+functionx activate(sd app)
 	sd window
 	setcall window gtk_application_window_new(app)
 	call gtk_window_set_title(window,"O Actionswf Debugger")
