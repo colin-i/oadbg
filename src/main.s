@@ -2,6 +2,7 @@
 format elfobj64
 
 const NULL=0
+const EXIT_FAILURE=1
 
 #function closing
 #	return (FALSE)
@@ -26,9 +27,20 @@ importx "g_signal_connect_data" g_signal_connect_data
 importx "g_application_run" g_application_run
 importx "g_object_unref" g_object_unref
 
+importx "pthread_create" pthread_create
+
+#void*
+function waiter(sd *unused)
+endfunction
+
 entry main()
-	sd a;setcall a gtk_application_new((NULL),0)
-	call g_signal_connect_data(a,"activate",activate,(NULL),(NULL),0)
-	sd r;setcall r g_application_run(a,0,(NULL))
-	call g_object_unref(a)
-	return r
+	sd id
+	sd pth;setcall pth pthread_create(#id,(NULL),waiter) #,(NULL))
+	if pth==0
+		sd a;setcall a gtk_application_new((NULL),0)
+		call g_signal_connect_data(a,"activate",activate,(NULL),(NULL),0)
+		sd r;setcall r g_application_run(a,0,(NULL))
+		call g_object_unref(a)
+		return r
+	endif
+	return (EXIT_FAILURE)
