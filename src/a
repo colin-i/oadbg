@@ -1,4 +1,6 @@
 
+#and ../*.json to /home/bc/.config/google-chrome/NativeMessagingHosts
+
 if [ -n "${1}" ]; then
 if [ "${1}" = "d" ]; then
 GDK_BACKEND=broadway BROADWAY_DISPLAY=:0 GTK_DEBUG=all GTK_INSPECTOR_DISPLAY=:1 ./oadbg

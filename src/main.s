@@ -29,11 +29,42 @@ importx "g_object_unref" g_object_unref
 
 importx "pthread_create" pthread_create
 
+
 #void*
 function waiter(sd *unused)
+	#; fileno(stdin#); or 0
 endfunction
 
+importx "read" read
+importx "write" write
+importx "stdin" stdin
+importx "stdout" stdout
+importx "fileno" fileno
+#importx "fflush" fflush
+
 entry main()
+#	return 0
+	ss buf
+	sd *=0
+	sv i^stdin
+	setcall i fileno(i#)
+	sv j^stdout
+	set j j#
+	sd jj
+	setcall jj fileno(j)
+	while 1==1
+		call read(i,#buf,4)
+		call read(i,#buf,4)
+		data test=6
+		chars t="\"pong\""
+		ss tt^t;add tt 2
+		shr buf;shr buf;shr buf;shr buf
+		shr buf;shr buf;shr buf;shr buf
+		set tt# buf
+		call write(jj,#test,10)
+#		call fflush(j)
+	endwhile
+	return 0
 	sd id
 	sd pth;setcall pth pthread_create(#id,(NULL),waiter) #,(NULL))
 	if pth==0

@@ -1,2 +1,0 @@
-
-sudo rsync -av --delete ~/b/p/ /var/www/html/b/

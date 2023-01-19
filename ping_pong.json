@@ -1,0 +1,10 @@
+{
+  "name": "ping_pong",
+  "description": "Example host for native messaging",
+  "path": "/home/bc/b/src/oadbg",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://accciaopdflbajjpfojgijjddpgopbdm/"
+  ]
+  //"allowed_extensions": [ "ping_pong@example.org" ]
+}
