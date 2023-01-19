@@ -22,8 +22,8 @@
 },
 
 //  "browser_action" :
-  "action": 
-  { 
+  "action":
+  {
     "default_icon": "icons/message.png"
   },
 
