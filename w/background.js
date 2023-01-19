@@ -1,5 +1,40 @@
 
 
+
+//chrome.browserAction.onClicked.addListener(() => {
+chrome.action.onClicked.addListener(() => {
+chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
+
+const queryString = tabs[0].url.split('?')[1];//self.location.search;
+console.log(queryString);
+const urlParams = new URLSearchParams(queryString);
+console.log(urlParams);
+const is_broadway = urlParams.keys().next().value;
+console.log(is_broadway);
+
+let port;
+if(is_broadway=="1")port = chrome.runtime.connectNative('oadbgb');
+else port = chrome.runtime.connectNative('oadbg');
+
+port.onMessage.addListener(function(msg) {
+  console.log('in');
+  console.log(msg);
+});
+port.onDisconnect.addListener(function() {
+  console.log("Disconnected");
+});
+//port.postMessage({text:is_broadway});
+chrome.action.onClicked.addListener(() => {
+  console.log('out');
+  port.postMessage({text:"ping"});
+});
+
+});
+});
+
+
+
+
 //On startup, connect to the "ping_pong" app.
 //let port = browser.runtime.connectNative("ping_pong");
 
@@ -13,26 +48,8 @@
 //	console.log("Ondisconnect Argument : " + JSON.stringify(msg));
 //});
 
-
-
-
-
 //On a click on the browser action, send the app a message.
 //browser.browserAction.onClicked.addListener(() => {
 //  console.log("Sending:  ping");
 //  port.postMessage("ping");
 //});
-
-var port = chrome.runtime.connectNative('ping_pong');
-port.onMessage.addListener(function(msg) {
-  console.log("Received" + msg);
-});
-port.onDisconnect.addListener(function() {
-  console.log("Disconnected");
-});
-
-//chrome.browserAction.onClicked.addListener(() => {
-chrome.action.onClicked.addListener(() => {
-  console.log("Sending:  ping");
-  port.postMessage({ text: "ping" });
-});

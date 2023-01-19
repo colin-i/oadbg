@@ -30,20 +30,14 @@ importx "g_object_unref" g_object_unref
 importx "pthread_create" pthread_create
 
 
-#void*
-function waiter(sd *unused)
-	#; fileno(stdin#); or 0
-endfunction
-
 importx "read" read
 importx "write" write
 importx "stdin" stdin
 importx "stdout" stdout
 importx "fileno" fileno
-#importx "fflush" fflush
 
-entry main()
-#	return 0
+#void*
+function waiter(sd *unused)
 	ss buf
 	sd *=0
 	sv i^stdin
@@ -62,9 +56,11 @@ entry main()
 		shr buf;shr buf;shr buf;shr buf
 		set tt# buf
 		call write(jj,#test,10)
-#		call fflush(j)
+		#call fflush(j)
 	endwhile
-	return 0
+endfunction
+
+entry main()
 	sd id
 	sd pth;setcall pth pthread_create(#id,(NULL),waiter) #,(NULL))
 	if pth==0

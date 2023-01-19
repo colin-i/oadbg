@@ -1,9 +1,8 @@
 {
-
-  "description": "Native messaging example add-on",
+  "description": "O Actionswf Debugger extension",
 //  "manifest_version": 2,
   "manifest_version": 3,
-  "name": "Native messaging example",
+  "name": "O Actionswf Debugger",
   "version": "1.0",
   "icons": {
     "48": "icons/message.png"
@@ -27,6 +26,6 @@
     "default_icon": "icons/message.png"
   },
 
-  "permissions": ["nativeMessaging"]
-
+  //"<all_urls>",
+  "permissions": ["nativeMessaging","tabs"]
 }

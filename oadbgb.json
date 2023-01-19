@@ -1,0 +1,11 @@
+{
+  "name": "oadbgb",
+  "description": "O Actionswf Debugger broadway",
+  //"path": "GDK_BACKEND=broadway BROADWAY_DISPLAY=:0 ./oadbg",
+  "path": "/home/bc/b/src/oadbg.sh",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://accciaopdflbajjpfojgijjddpgopbdm/"
+  ]
+  //"allowed_extensions": [ "ping_pong@example.org" ]
+}
