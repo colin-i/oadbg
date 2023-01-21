@@ -1,9 +1,9 @@
 
+<div id="container"></div>
+<script>
 //input:
 //src width height is_broadway
 
-<div id="container"></div>
-<script>
     window.addEventListener("DOMContentLoaded", () => {
 	window.RufflePlayer.config = {
 	"logLevel": "debug",
@@ -16,6 +16,7 @@
         let container = document.getElementById("container");
         container.appendChild(player);
         player.load("/a/universe/universe.swf");
+	//loadedmetadata is not for the tag
 //	setTimeout(() => {
 //	console.log(player);
 //	console.log(player.pause);

@@ -1,37 +1,41 @@
 
 
 
-//chrome.browserAction.onClicked.addListener(() => {
-chrome.action.onClicked.addListener(() => {
-chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
+function begin(){
+	//chrome.browserAction.onClicked.addListener(() => {
+	chrome.action.onClicked.addListener(connect);
+}
 
-const queryString = tabs[0].url.split('?')[1];//self.location.search;
-console.log(queryString);
-const urlParams = new URLSearchParams(queryString);
-console.log(urlParams);
-const is_broadway = urlParams.keys().next().value;
-console.log(is_broadway);
+function connect(){
+	chrome.action.onClicked.removeListener(connect);
+	chrome.tabs.query({active: true, currentWindow: true}, tabs => {//lastFocusedWindow
+		const queryString = tabs[0].url.split('?')[1];//self.location.search;
+		console.log(queryString);
+		const urlParams = new URLSearchParams(queryString);
+		console.log(urlParams);
+		const is_broadway = urlParams.keys().next().value;
+		console.log(is_broadway);
 
-let port;
-if(is_broadway=="1")port = chrome.runtime.connectNative('oadbgb');
-else port = chrome.runtime.connectNative('oadbg');
+		let port;
+		if(is_broadway=="1")port = chrome.runtime.connectNative('oadbgb');
+		else port = chrome.runtime.connectNative('oadbg');
 
-port.onMessage.addListener(function(msg) {
-  console.log('in');
-  console.log(msg);
-});
-port.onDisconnect.addListener(function() {
-  console.log("Disconnected");
-});
-//port.postMessage({text:is_broadway});
-chrome.action.onClicked.addListener(() => {
-  console.log('out');
-  port.postMessage({text:"ping"});
-});
-
-});
-});
-
+		port.onMessage.addListener(function(msg) {
+		  console.log('in');
+		  console.log(msg);
+		});
+		port.onDisconnect.addListener(function() {
+		  console.log("Disconnected");
+		  begin();
+		});
+		//port.postMessage({text:is_broadway});
+		//chrome.action.onClicked.addListener(() => {
+		//  console.log('out');
+		port.postMessage({text:"ping"});
+		//});
+	});
+}
+begin();
 
 
 
