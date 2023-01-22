@@ -52,7 +52,7 @@ function check_error(error){
 
 function connect(){
 	chrome.action.onClicked.removeListener(connect);
-	const promise=chrome.runtime.sendNativeMessage("oadbge", { text:"1" });//,{text:""},check_response
+	const promise=chrome.runtime.sendNativeMessage("oadbge", { });//,{text:""},check_response
 	promise.then(check_response,check_error);
 }
 begin();
