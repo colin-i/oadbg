@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 #if [ -n "${1}" ]; then
 #if [ "${1}" = "d" ]; then
