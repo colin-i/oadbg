@@ -91,6 +91,9 @@ function instructions(msg){
 //});
 //return;
 
+//Refused to load the script because it violates the following Content Security Policy directive: "script-src 'self' ...
+//ruffle.src="/dist/ruffle.js"
+
 //document.addEventListener('oadbg-ready', dbgready);
 //document.dispatchEvent(new CustomEvent('oadbg-ready', { }));
 
