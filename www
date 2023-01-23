@@ -7,4 +7,4 @@ sudo rsync -av oadbg.json /etc/opt/chrome/native-messaging-hosts/oadbg.json
 sudo rsync -av oadbgb.json /etc/opt/chrome/native-messaging-hosts/oadbgb.json
 #sudo rsync -av oadbgb.json /home/bc/.config/google-chrome/NativeMessagingHosts/
 
-sudo rsync -av oadbge.json /etc/opt/chrome/native-messaging-hosts/oadbge.json
+#sudo rsync -av oadbge.json /etc/opt/chrome/native-messaging-hosts/oadbge.json

@@ -1,7 +1,7 @@
 
 syms=-s
 
-all: oadbg a.out
+all: oadbg
 
 a.out:
 	cc test.c
@@ -18,4 +18,3 @@ clean:
 	-rm main.o
 	-rm main.s.log
 	-rm oadbg
-	-rm a.out

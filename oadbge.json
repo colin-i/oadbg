@@ -1,9 +1,0 @@
-{
-  "name": "oadbge",
-  "description": "O Actionswf Debugger is installed?",
-  "path": "/home/bc/b/src/a.out",
-  "type": "stdio",
-  "allowed_origins": [
-    "chrome-extension://accciaopdflbajjpfojgijjddpgopbdm/"
-  ]
-}

@@ -1,61 +1,64 @@
 
+let pageport;
 
+function begin(msg){
+	pageport.onMessage.removeListener(begin);
+	const is_broadway=msg.text;
 
-function begin(){
-	//chrome.browserAction.onClicked.addListener(() => {
-	chrome.action.onClicked.addListener(connect);
-}
+	if(is_broadway)port = chrome.runtime.connectNative('oadbgb');
+	else port = chrome.runtime.connectNative('oadbg');
 
-function check_response(){//response
-	//if(response)begin();
-	//else{
-	chrome.tabs.query({active: true, currentWindow: true}, tabs => {//lastFocusedWindow
-		if(tabs.length>0){
-			const queryString = tabs[0].url.split('?')[1];//self.location.search;
-			console.log(queryString);
-			const urlParams = new URLSearchParams(queryString);
-			console.log(urlParams);
-			const is_broadway = urlParams.keys().next().value;
-			console.log(is_broadway);
-	
-			let port;
-			if(is_broadway=="1")port = chrome.runtime.connectNative('oadbgb');
-			else port = chrome.runtime.connectNative('oadbg');
-	
-			//chrome.runtime.lastError is nullified after default print error
-			//console.error= function (arg) { is not working
-			//if(port.name){ is always ""
-			//port.onDisconnect is not called if the application is missing
-			//the only solution left is to call a third checker
-	
-			port.onDisconnect.addListener(function() {
-			  console.log("Disconnected");
-			  begin();
-			});
-			port.onMessage.addListener(function(msg) {
-			  console.log('in');
-			  console.log(msg);
-			});
-			//port.postMessage({text:is_broadway});
-			//chrome.action.onClicked.addListener(() => {
-			//  console.log('out');
-			port.postMessage({text:"ping"});
-			//});
-		}else begin();
+	port.onDisconnect.addListener(function() {
+	  console.log("Disconnected");
 	});
-}
-function check_error(error){
-	const s=`${error}`;
-	console.error(s);
-	begin();
+	port.onMessage.addListener(function(msg) {
+	  console.log('in');
+	  console.log(msg);
+	});
+	port.postMessage({text:"ping"});
+
+	pageport.onMessage.addListener(instructions);
+	pageport.postMessage({});//send oadbg connected (or not but we unimplemented the extension action click so here is not a noob area)
 }
 
-function connect(){
-	chrome.action.onClicked.removeListener(connect);
-	const promise=chrome.runtime.sendNativeMessage("oadbge", { });//,{text:""},check_response
-	promise.then(check_response,check_error);
+// For long-lived connections:
+chrome.runtime.onConnectExternal.addListener(function(p) {
+	pageport=p;
+	pageport.onMessage.addListener(begin);//recv arguments
+});
+
+function instructions(msg){
+	console.log(msg.text);
 }
-begin();
+
+
+
+
+//chrome.runtime.lastError is nullified after default print error
+//console.error= function (arg) { is not working
+//if(port.name){ is always ""
+//port.onDisconnect is not called if the application is missing
+//the only solution left is to call a third checker
+
+
+
+//const promise=chrome.runtime.sendNativeMessage("oadbge", { });//,{text:""},check_response
+//promise.then(check_response,check_error);
+
+
+
+//function check_error(error){
+//	const s=`${error}`;
+//	console.error(s);
+//}
+
+
+//chrome.action.onClicked.addListener(connect);
+
+
+//	chrome.tabs.query({active: true, currentWindow: true}, tabs => {//lastFocusedWindow: true
+//		if(tabs.length>0){
+//			const tab=tabs[0];
 
 
 
@@ -77,3 +80,36 @@ begin();
 //  console.log("Sending:  ping");
 //  port.postMessage("ping");
 //});
+
+
+
+
+//,"scripting"
+//chrome.scripting.executeScript({
+//	target: { tabId: tab.id },
+//	files: ["content-script.js"]
+//});
+//return;
+
+//document.addEventListener('oadbg-ready', dbgready);
+//document.dispatchEvent(new CustomEvent('oadbg-ready', { }));
+
+//player=document.getElementById("container").children[0];
+//player is not having ruffle api in content script, only structure. tryed also through dispatchEvent
+
+//Only the web page can initiate a connection. (page<->bgscript)
+
+//loadedmetadata is not for the tag
+//		setTimeout(() => {
+//			console.log(player);
+//			console.log(player.pause);
+//			player.pause();
+//		}, "10000");
+
+
+
+//test.c
+//int a=0; will crash chrome
+//char a[]={2,0,0,0,'\"','\"'};
+//write(fileno(stdout),&a,6);
+//fwrite(&a,4,1,stdout);

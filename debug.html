@@ -1,36 +1,50 @@
 
+<!--https://github.com/ruffle-rs/ruffle/blob/master/web/packages/selfhosted/README.md#javascript-api-->
+
+<!--
+input: src is_broadway
+-->
+
 <div id="container"></div>
 <script>
-//input:
-//src width height is_broadway
+	const ext_id='accciaopdflbajjpfojgijjddpgopbdm';
+	let player;
+	let port;
+	function go(){
+		player.removeEventListener('loadedmetadata',go);
+		const oldConsole = {};
+		oldConsole.log = console.log;
+		console.log= function (arg) {
+			port.postMessage({text:arg});
+			oldConsole.log(arg);
+		}
+		player.style.width=player.metadata.width;
+		player.style.height=player.metadata.height;
+	}
+	function begin(){//recv oadbg connected
+		port.onMessage.removeListener(begin);
+		player.addEventListener('loadedmetadata', go);
+		player.load("/a/universe/universe.swf");
+	}
+	window.addEventListener("DOMContentLoaded", () => {
+		window.RufflePlayer.config = {
+			"logLevel": "debug"
+		};
+		const ruffle = window.RufflePlayer.newest();
+		const container = document.getElementById("container");
+		player = ruffle.createPlayer();
+		container.appendChild(player);
 
-    window.addEventListener("DOMContentLoaded", () => {
-	window.RufflePlayer.config = {
-	"logLevel": "debug",
-	//"menu": true,
-	//"contextMenu": true,
-	//"showSwfDownload": true,
-	};
-        let ruffle = window.RufflePlayer.newest();
-        let player = ruffle.createPlayer();
-        let container = document.getElementById("container");
-        container.appendChild(player);
-        player.load("/a/universe/universe.swf");
-	//loadedmetadata is not for the tag
-//	setTimeout(() => {
-//	console.log(player);
-//	console.log(player.pause);
-//		player.pause();
-//	}, "10000");
-const oldConsole = {};
-oldConsole.log = console.log;
-console.log= function (arg) {
-    oldConsole.log('MY CONSOLE!!');
-    oldConsole.log(arg);
-}
-    });
+		const queryString = self.location.search;//tab.url.split('?')[1]
+		const urlParams = new URLSearchParams(queryString);
+		const is_broadway = urlParams.keys().next().value;
 
+		port = chrome.runtime.connect(ext_id);
+		port.onMessage.addListener(begin);
+		port.postMessage({text:is_broadway});//send arguments
+	});
 </script>
+
 <script src="/dist/ruffle.js">
 // file:// will not work, there is a graphical information at runtime with the player about this
 </script>
