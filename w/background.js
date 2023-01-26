@@ -9,6 +9,7 @@ function begin(msg,pageport){
 
 	pageport.onDisconnect.addListener(function() {
 	  console.log("Page disconnected");
+	  //is working also with the big google chrome close button
 	  port.postMessage({a:"close"});
 	});
 
