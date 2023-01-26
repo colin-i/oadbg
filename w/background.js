@@ -1,29 +1,32 @@
 
-let pageport;
 
-function begin(msg){
+function begin(msg,pageport){
 	pageport.onMessage.removeListener(begin);
-	const is_broadway=msg.text;
 
-	if(is_broadway)port = chrome.runtime.connectNative('oadbgb');
-	else port = chrome.runtime.connectNative('oadbg');
+	const src_url=msg.text;
+
+	const port = chrome.runtime.connectNative('oadbg');
+
+	pageport.onDisconnect.addListener(function() {
+	  console.log("Page disconnected");
+	  port.postMessage({a:"close"});
+	});
 
 	port.onDisconnect.addListener(function() {
-	  console.log("Disconnected");
+	  console.log("App disconnected");
 	});
 	port.onMessage.addListener(function(msg) {
 	  console.log('in');
 	  console.log(msg);
 	});
-	port.postMessage({text:"ping"});
+	port.postMessage({a:"ping"});//Uncaught SyntaxError: Unexpected string
 
 	pageport.onMessage.addListener(instructions);
 	pageport.postMessage({});//send oadbg connected (or not but we unimplemented the extension action click so here is not a noob area)
 }
 
 // For long-lived connections:
-chrome.runtime.onConnectExternal.addListener(function(p) {
-	pageport=p;
+chrome.runtime.onConnectExternal.addListener(function(pageport) {
 	pageport.onMessage.addListener(begin);//recv arguments
 });
 
@@ -31,6 +34,10 @@ function instructions(msg){
 	console.log(msg.text);
 }
 
+
+
+//if(is_broadway)port = chrome.runtime.connectNative('oadbgb');
+//else
 
 
 
