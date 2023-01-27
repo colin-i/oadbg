@@ -2,7 +2,6 @@
     <head>
 <!--
 input: src
-// is_broadway
 -->
         <meta charset="utf-8" />
         <title>O ActionSWF Debugger</title>
@@ -35,8 +34,7 @@ https://htmldom.dev/create-resizable-split-views/
             .resizer {
                 background-color: #cbd5e0;
                 cursor: ew-resize;
-                height: 100%;
-                width: 2px
+                width: 10px
             }
             .container__right {
                 /* Take the remaining width */
@@ -54,7 +52,7 @@ https://htmldom.dev/create-resizable-split-views/
 		<div class="container__left" id="container"></div>
 		<div class="resizer" id="dragMe"></div>
 		<div class="container__right">
-			<iframe id="inside" src="http://localhost:8080"></iframe>
+			<iframe id="inside" src="http://localhost:8080" style="height:100%"></iframe>
 		</div>
 	</div>
 
@@ -115,7 +113,7 @@ https://htmldom.dev/create-resizable-split-views/
                 let x;// = 0;
                 //let y;// = 0;
                 let leftWidth;// = 0;
-			let resWidth;//is 1 will be 2
+			let resWidth = 0;//is 1 will be fixed
 
                 // Handle the mousedown event
                 // that's triggered when user drags the resizer
@@ -124,7 +122,9 @@ https://htmldom.dev/create-resizable-split-views/
                     x = e.clientX;
                     //y = e.clientY;
                     leftWidth = leftSide.getBoundingClientRect().width;
-			resWidth = resizer.getBoundingClientRect().width;
+			//only once, will smalling it with further calls
+			//console.log(resizer.getBoundingClientRect().width);
+			if (resWidth == 0)resWidth = resizer.getBoundingClientRect().width;
 
                     // Attach the listeners to `document`
                     document.addEventListener('mousemove', mouseMoveHandler);
@@ -138,11 +138,15 @@ https://htmldom.dev/create-resizable-split-views/
 
 			const all_width = resizer.parentNode.getBoundingClientRect().width;
 			const new_width = leftWidth + dx;
-                    const newLeftWidth = (new_width * 100) / all_width;
-                    leftSide.style.width = `${newLeftWidth}%`;
+                    const new_left_width = (new_width * 100) / all_width;
+			//resizer will disapear when forcing on left if not this comparison
+			if( new_left_width > resWidth ){
+				leftSide.style.width = `${new_left_width}%`;
 
-			//rightSide.getBoundingClientRect().width will not work
-			inside.style.width = all_width - new_width - resWidth;
+				//rightSide.getBoundingClientRect().width will not work
+				const new_right_width = all_width - new_width - resWidth;
+				inside.style.width = new_right_width;
+			}
 
                     resizer.style.cursor = 'col-resize';
 			//But it causes another issue. As soon as the user moves the mouse around, we will see the default mouse cursor beause the mouse isn't on top of the resizer. User will see the screen flickering because the cursor is changed continuously.
