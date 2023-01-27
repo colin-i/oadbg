@@ -51,9 +51,11 @@ https://htmldom.dev/create-resizable-split-views/
 	<div class="container">
 		<div class="container__left" id="container"></div>
 		<div class="resizer" id="dragMe"></div>
-		<div class="container__right">
+		<!--<div class="container__right">
+		now it's ok without inside
 			<iframe id="inside" src="http://localhost:8080" style="height:100%"></iframe>
-		</div>
+		</div>-->
+		<iframe class="container__right" src="http://localhost:8080" style="height:100%"></iframe>
 	</div>
 
 <!--https://github.com/ruffle-rs/ruffle/blob/master/web/packages/selfhosted/README.md#javascript-api-->
@@ -107,13 +109,18 @@ https://htmldom.dev/create-resizable-split-views/
                 const resizer = document.getElementById('dragMe');
                 const leftSide = resizer.previousElementSibling;
                 const rightSide = resizer.nextElementSibling;
-			const inside = document.getElementById('inside');
+		//const inside = document.getElementById('inside');
+
+		const cookie_name='leftside';
+		if (document.cookie.split(';').some((item) => item.trim().startsWith(cookie_name+'='))) {
+			leftSide.style.width = document.cookie.split('; ').find((row) => row.startsWith(cookie_name+'='))?.split('=')[1];
+		}
 
                 // The current position of mouse
                 let x;// = 0;
                 //let y;// = 0;
                 let leftWidth;// = 0;
-			let resWidth = 0;//is 1 will be fixed
+		//	let resWidth = 0;//is 1 will be fixed
 
                 // Handle the mousedown event
                 // that's triggered when user drags the resizer
@@ -124,7 +131,7 @@ https://htmldom.dev/create-resizable-split-views/
                     leftWidth = leftSide.getBoundingClientRect().width;
 			//only once, will smalling it with further calls
 			//console.log(resizer.getBoundingClientRect().width);
-			if (resWidth == 0)resWidth = resizer.getBoundingClientRect().width;
+			//if (resWidth == 0)resWidth = resizer.getBoundingClientRect().width;
 
                     // Attach the listeners to `document`
                     document.addEventListener('mousemove', mouseMoveHandler);
@@ -140,13 +147,13 @@ https://htmldom.dev/create-resizable-split-views/
 			const new_width = leftWidth + dx;
                     const new_left_width = (new_width * 100) / all_width;
 			//resizer will disapear when forcing on left if not this comparison
-			if( new_left_width > resWidth ){
+			//if( new_left_width > resWidth ){
 				leftSide.style.width = `${new_left_width}%`;
 
 				//rightSide.getBoundingClientRect().width will not work
-				const new_right_width = all_width - new_width - resWidth;
-				inside.style.width = new_right_width;
-			}
+			//	const new_right_width = all_width - new_width - resWidth;
+				//inside.style.width = new_right_width;
+			//}
 
                     resizer.style.cursor = 'col-resize';
 			//But it causes another issue. As soon as the user moves the mouse around, we will see the default mouse cursor beause the mouse isn't on top of the resizer. User will see the screen flickering because the cursor is changed continuously.
@@ -162,6 +169,7 @@ https://htmldom.dev/create-resizable-split-views/
                 };
 
                 const mouseUpHandler = function () {
+			document.cookie = cookie_name+'='+leftSide.style.width;//you can only set/update a single cookie at a time using
                     resizer.style.removeProperty('cursor');
                     document.body.style.removeProperty('cursor');
 
