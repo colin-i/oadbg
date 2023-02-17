@@ -4,3 +4,5 @@ google-chrome http://localhost/debug.html?/a/universe/universe.swf
 #ffdec -swf2xml /home/bc/Desktop/ruffle/tests/tests/swfs/avm1/trace/test.swf /tmp/t.xml && \
 #xmllint --xpath '/swf/tags/item[@type="MetadataTag"]/xmlMetadata/text()' /tmp/t.xml || \
 #rm /tmp/t.xml
+
+#<?xml version="1.0"?><oadbg></oadbg>
