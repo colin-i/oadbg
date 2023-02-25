@@ -1,18 +1,27 @@
 
+ifndef OCOMP
+OCOMP=o
+endif
+
+ifndef OLINK
+OLINK=ounused
+endif
+
+ifndef syms
+syms=-s
+endif
+
 syms=-s
 
 all: oadbg
 
-a.out:
-	cc test.c
-
 oadbg: main.o
-	ounused main.s.log
+	${OLINK} main.s.log
 	@echo
-	$(CC) main.o -o oadbg `pkg-config --libs gtk4`
+	$(CC) ${syms} main.o -o oadbg `pkg-config --libs gtk4`
 
 %.o: %.s
-	o $<
+	${OCOMP} $<
 
 clean:
 	-rm main.o
