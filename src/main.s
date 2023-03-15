@@ -52,7 +52,7 @@ endfunction
 #void*
 function waiter(sd *unused)
 	datax len#1
-	charsx buf#100
+	charx buf#100
 	sv i^stdin
 	setcall i fileno(i#)
 	sv j^stdout
@@ -78,7 +78,7 @@ function waiter(sd *unused)
 		call write(f,#len,out)
 
 		datax len2#1
-		charsx buf2#200
+		charx buf2#200
 
 		importx "sprintf" sprintf
 		importx "strlen" strlen
