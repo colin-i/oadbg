@@ -7,8 +7,8 @@ ifndef OLINK
 OLINK=ounused
 endif
 
-ifndef syms
-syms=-O1 -s
+ifndef linkerflags
+linkerflags=-O1 -s
 endif
 
 all: oadbg
@@ -16,7 +16,7 @@ all: oadbg
 oadbg: main.o
 	${OLINK} main.s.log
 	@echo
-	$(CC) ${syms} main.o -o oadbg `pkg-config --libs gtk4`
+	$(CC) ${linkerflags} main.o -o oadbg `pkg-config --libs gtk4`
 
 %.o: %.s
 	${OCOMP} $<
