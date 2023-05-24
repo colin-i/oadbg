@@ -40,11 +40,6 @@ https://htmldom.dev/create-resizable-split-views/
         </style>
     </head>
     <body>
-	<div class="container">
-		<div class="container__left" id="container"></div>
-		<div class="resizer" id="dragMe"></div>
-		<iframe class="container__right" src="http://localhost:8080"></iframe>
-	</div>
 
 <!--https://github.com/ruffle-rs/ruffle/blob/master/web/packages/selfhosted/README.md#javascript-api-->
 
@@ -59,6 +54,19 @@ https://htmldom.dev/create-resizable-split-views/
 	swf_url = urlParams.keys().next().value;
 
 	if(swf_url){
+		const el=document.createElement("div");
+		el.classList.add("container");
+		const el2=document.createElement("div");
+		el2.id="container";
+		el2.classList.add("container__left");
+		const el3=document.createElement("div");
+		el3.id="dragMe";
+		el3.classList.add("resizer");
+		const el4=document.createElement("iframe");
+		el4.classList.add("container__right");
+		el4.src="http://localhost:8080";
+		el.appendChild(el2);el.appendChild(el3);el.appendChild(el4);
+		document.body.appendChild(el);
 		function go(){
 			player.removeEventListener('loadedmetadata',go);
 			const oldConsole = {};
