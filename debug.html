@@ -1,7 +1,7 @@
 <html lang="en">
     <head>
 <!--
-input: src
+input: s=src b
 -->
         <meta charset="utf-8" />
         <title>O ActionSWF Debugger</title>
@@ -17,6 +17,13 @@ https://htmldom.dev/create-resizable-split-views/
                 height: 100%;
                 width: 100%
             }
+            .container_c {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                width: 100%
+            }
+
             .container__left {
                 /* Initially, the left takes 3/4 width */
                 width: 75%;
@@ -25,12 +32,24 @@ https://htmldom.dev/create-resizable-split-views/
                 display: flex;
                 justify-content: center
             }
-            .resizer {
+            .resizer_vert {
                 background-color: #cbd5e0;
-                cursor: ew-resize;
+                cursor: col-resize;
                 width: 10px
             }
-            .container__right {
+            .container__top {
+                height: 75%;
+                display: flex;
+			flex-direction: column; //tested, and ruffle player will need this
+                justify-content: center
+            }
+            .resizer_hor {
+                background-color: #cbd5e0;
+                cursor: row-resize;
+                height: 10px
+            }
+
+            .container__second {
                 /* Take the remaining width */
                 flex: 1;
 
@@ -48,25 +67,31 @@ https://htmldom.dev/create-resizable-split-views/
 	let player;
 	let port;
 	let swf_url;
+	let bottom;
 
 	const queryString = self.location.search;//tab.url.split('?')[1]
 	const urlParams = new URLSearchParams(queryString);
-	swf_url = urlParams.keys().next().value;
+	if(urlParams.has('s'))swf_url=urlParams.get('s');
 
 	if(swf_url){
+		bottom=urlParams.has('b');
+
 		const el=document.createElement("div");
-		el.classList.add("container");
+		el.classList.add(bottom?"container_c":"container");
+
 		const el2=document.createElement("div");
 		el2.id="container";
-		el2.classList.add("container__left");
+		el2.classList.add(bottom?"container__top":"container__left");
 		const el3=document.createElement("div");
 		el3.id="dragMe";
-		el3.classList.add("resizer");
+		el3.classList.add(bottom?"resizer_hor":"resizer_vert");
 		const el4=document.createElement("iframe");
-		el4.classList.add("container__right");
+		el4.classList.add("container__second");
 		el4.src="http://localhost:8080";
+
 		el.appendChild(el2);el.appendChild(el3);el.appendChild(el4);
 		document.body.appendChild(el);
+
 		function go(){
 			player.removeEventListener('loadedmetadata',go);
 			const oldConsole = {};
@@ -98,7 +123,7 @@ https://htmldom.dev/create-resizable-split-views/
 
 			frameset_init();
 		});
-	}else document.body.innerText="Usage example: http://localhost/debug.html?/a/universe/universe.swf";
+	}else document.body.innerText="Usage example: http://localhost/debug.html?s=/a/universe/universe.swf. &b is align bottom.";
 
 	function frameset_init(){
                 // Query the element
@@ -108,7 +133,9 @@ https://htmldom.dev/create-resizable-split-views/
 
 		const cookie_name='leftside';
 		if (document.cookie.split(';').some((item) => item.trim().startsWith(cookie_name+'='))) {
-			leftSide.style.width = document.cookie.split('; ').find((row) => row.startsWith(cookie_name+'='))?.split('=')[1];
+			const cookvalue=document.cookie.split('; ').find((row) => row.startsWith(cookie_name+'='))?.split('=')[1];
+			if(bottom)leftSide.style.height = cookvalue;
+			else leftSide.style.width = cookvalue;
 		}
 
                 // The current position of mouse
@@ -119,8 +146,13 @@ https://htmldom.dev/create-resizable-split-views/
                 // that's triggered when user drags the resizer
                 const mouseDownHandler = function (e) {
                     // Get the current mouse position
-                    x = e.clientX;
-                    leftWidth = leftSide.getBoundingClientRect().width;
+			if(bottom){
+				x = e.clientY;
+				leftWidth = leftSide.getBoundingClientRect().height;
+			}else{
+				x = e.clientX;
+				leftWidth = leftSide.getBoundingClientRect().width;
+			}
 
                     // Attach the listeners to `document`
                     document.addEventListener('mousemove', mouseMoveHandler);
@@ -128,18 +160,27 @@ https://htmldom.dev/create-resizable-split-views/
                 };
 
                 const mouseMoveHandler = function (e) {
-                    // How far the mouse has been moved
-                    const dx = e.clientX - x;
+			let dx,all_width;
 
-			const all_width = resizer.parentNode.getBoundingClientRect().width;
+			// How far the mouse has been moved
+			if(bottom){
+				dx = e.clientY - x;
+				all_width = resizer.parentNode.getBoundingClientRect().height;
+				//resizer.style.cursor = 'row-resize';
+				document.body.style.cursor = 'row-resize';
+			}else{
+				dx = e.clientX - x;
+				all_width = resizer.parentNode.getBoundingClientRect().width;
+				//resizer.style.cursor = 'col-resize';
+				//But it causes another issue. As soon as the user moves the mouse around, we will see the default mouse cursor because the mouse isn't on top of the resizer. User will see the screen flickering because the cursor is changed continuously.
+				document.body.style.cursor = 'col-resize';
+			}
+
 			const new_width = leftWidth + dx;
-                    const new_left_width = (new_width * 100) / all_width;
-			leftSide.style.width = `${new_left_width}%`;
+			const new_left_width = (new_width * 100) / all_width;
 
-
-                    resizer.style.cursor = 'col-resize';
-			//But it causes another issue. As soon as the user moves the mouse around, we will see the default mouse cursor beause the mouse isn't on top of the resizer. User will see the screen flickering because the cursor is changed continuously.
-                    document.body.style.cursor = 'col-resize';
+			if(bottom)leftSide.style.height = `${new_left_width}%`;
+			else leftSide.style.width = `${new_left_width}%`;
 
 			//We also prevent the mouse events and text selection in both sides by
 
@@ -151,8 +192,10 @@ https://htmldom.dev/create-resizable-split-views/
                 };
 
                 const mouseUpHandler = function () {
-			document.cookie = cookie_name+'='+leftSide.style.width+'; max-age='+(60*60*24*365);//you can only set/update a single cookie at a time using
-                    resizer.style.removeProperty('cursor');
+			const unitvalue=bottom?leftSide.style.height:leftSide.style.width;
+
+			document.cookie = cookie_name+'='+unitvalue+'; max-age='+(60*60*24*365);//you can only set/update a single cookie at a time using
+                    //resizer.style.removeProperty('cursor');
                     document.body.style.removeProperty('cursor');
 
                     leftSide.style.removeProperty('user-select');
