@@ -18,7 +18,7 @@ functionx activate(sd app)
 	setcall main.window gtk_application_window_new(app)
 	sd id
 	sd pth;setcall pth pthread_create(#id,(NULL),waiter) #,(NULL))
-	if pth==0
+	if pth=0
 		call gtk_window_set_title(main.window,"O ActionSWF Debugger")
 		#k.g_signal_connect_data (window, b"close-request", closing, None, None, 0)
 		call gtk_window_maximize(main.window)
@@ -62,7 +62,7 @@ function waiter(sd *unused)
 	sd f
 	setcall f open("/home/bc/b/1",1)
 
-	while 1==1
+	while 1=1
 #it's not working on terminal (tested with echo -en "\x07\x00\x00\x00\"close\"" | edb --run ./oadbg | hexdump -C) when read is non-blocking anyway
 #echo -en "\x07\x00\x00\x00\"close\"" | hexdump -C
 #const F_SETFL=4
@@ -91,7 +91,7 @@ function waiter(sd *unused)
 		sd cmp
 		vstr qw="{\"a\":\"close\"}"
 		setcall cmp strcmp(qw,#buf)
-		if cmp==0
+		if cmp=0
 			call g_idle_add(closing) #,arg
 			break
 		endif
