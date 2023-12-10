@@ -6,5 +6,5 @@
 
 GDK_BACKEND=broadway BROADWAY_DISPLAY=:0 ./oadbg
 
-#can't debug this:          browser<->(read/write stdin)oadbg
-#make a debugger extension: browser<->(read/write stdin)elf(read/write socket)<->(read/write socket)oadbg
+#can't debug this:          browser<->(read/write std)oadbg
+#make a debugger extension: browser<->(read/write std)elf(read/write socket)<->(read/write socket)oadbg
