@@ -1,6 +1,10 @@
 
 format elfobj64
 
+entry main()
+
+#!
+
 const NULL=0
 
 const FALSE=0
