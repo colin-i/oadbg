@@ -27,8 +27,8 @@ oadbg: main.o
 	$(CC) -c $*.c
 
 clean:
-	-rm main.o
-	-rm main.s.log
-	-rm main.s.x
-	-rm main.c
-	-rm oadbg
+	-rm -f main.o
+	-rm -f main.s.log
+	-rm -f main.s.x
+	-rm -f main.c
+	-rm -f oadbg
