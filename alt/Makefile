@@ -14,14 +14,14 @@ endif
 
 OFLAGS=x_file 2
 
-proj=oadbg
+proj=actionswf-alt
 
 all: ${proj}
 
 ${proj}: main.o
 	${OLINK} main.s.log
 	@echo
-	$(CC) ${linkerflags} $< -o ${proj} `pkg-config --libs gtk4`
+	$(CC) ${linkerflags} $< -o ${proj}
 
 %.o: %.s
 	${OCOMP} $< ${OFLAGS}
