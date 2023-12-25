@@ -19,18 +19,18 @@ proj=oadbg
 all: ${proj}
 
 ${proj}: main.o
-	${OLINK} main.s.log
+	${OLINK} main.oc.log
 	@echo
 	$(CC) ${linkerflags} $< -o ${proj} `pkg-config --libs gtk4`
 
-%.o: %.s
+%.o: %.oc
 	${OCOMP} $< ${OFLAGS}
 	${OCONV} $<.x
 	$(CC) -c $*.c
 
 clean:
 	-rm -f main.o
-	-rm -f main.s.log
-	-rm -f main.s.x
+	-rm -f main.oc.log
+	-rm -f main.oc.x
 	-rm -f main.c
 	-rm -f ${proj}
