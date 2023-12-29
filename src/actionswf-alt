@@ -1,0 +1,36 @@
+
+#1 file.swf  optional 2 verbose
+
+if [ -z "${1}" ]; then echo file path required; exit 1; fi
+
+dname=`dirname ${1}`
+cd ${dname} || exit 1
+
+bname=`basename ${1}`
+folder="${bname%.*}"
+if [ -n "${2}" ]; then echo ${folder}; fi
+
+ffdec -export script ${folder} ${1} || exit 1
+
+out=${folder}.dbg
+mkdir -p ${out}
+
+#is unsorted
+cd ${folder}
+i=0
+t=../temp.tmp
+find -name DoAction.as > ${t}
+echo
+sort ${t} > ${t}2
+rm ${t}
+actions=( `cat ${t}2` )
+rm ${t}2
+for var in "${actions[@]}"; do
+	if [ -n "${2}" ]; then echo ${var}; fi
+	cp ${var} ../${out}/${i}
+	i=$((i+1))
+done
+
+#mv .swf .orig.swf
+#rerun swf maker but instead of action.. call action_dbg/action_sprite_dbg
+#diff .swf .orig.swf

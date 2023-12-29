@@ -21,7 +21,8 @@ all: ${proj}
 ${proj}: main.o
 	${OLINK} main.oc.log
 	@echo
-	$(CC) ${linkerflags} $< -o ${proj} `pkg-config --libs gtk4`
+	$(CC) ${linkerflags} $< -o ${proj}
+	# `pkg-config --libs gtk4`
 
 %.o: %.oc
 	${OCOMP} $< ${OFLAGS}
