@@ -7,30 +7,71 @@ dname=`dirname ${1}`
 cd ${dname} || exit 1
 
 bname=`basename ${1}`
+
+log=${bname}.log
+if [ ! -e ${log} ]; then echo no log; exit 1; fi
+
+isdebug=${2}
+
 folder="${bname%.*}"
-if [ -n "${2}" ]; then echo ${folder}; fi
+if [ -n "${isdebug}" ]; then echo ${folder}; fi
 
 ffdec -export script ${folder} ${1} || exit 1
-
+ 
 out=${folder}.dbg
 mkdir -p ${out}
 
-#is unsorted
 cd ${folder}
-i=0
-t=../temp.tmp
-find -name DoAction.as > ${t}
-echo
-sort ${t} > ${t}2
-rm ${t}
-actions=( `cat ${t}2` )
-rm ${t}2
-for var in "${actions[@]}"; do
-	if [ -n "${2}" ]; then echo ${var}; fi
-	cp ${var} ../${out}/${i}
-	i=$((i+1))
-done
 
-#mv .swf .orig.swf
-#rerun swf maker but instead of action.. call action_dbg/action_sprite_dbg
-#diff .swf .orig.swf
+doaction () {
+	to=${1}
+	shift
+	for var in "$@"; do
+		f=`echo ${var} | grep -o "frame_.*/"`
+		f=${f::-1}
+		f=${to}_${f:6}
+		v=
+		if [ -n "${isdebug}" ]; then v=-v; fi
+		cp ${v} ${var} ../${out}/${f}
+	done
+}
+s= #id
+while read p; do
+	if [ -z "${s}" ]; then
+		s=${p}
+		t= #type
+		if [ -n "${isdebug}" ]; then echo id = ${s}; fi
+	else
+		if [ -z "${t}" ]; then
+			if [ -z "${p}" ]; then
+				t=1 #can be show or done
+			else
+				t=2 #action
+				lines=${p}
+				if [ -n "${isdebug}" ]; then echo lines = ${lines}; fi
+			fi
+		elif [ ${t} = 1 ]; then
+			if [ -z "${p}" ]; then
+				echo show
+			else
+				if [ -n "${isdebug}" ]; then echo finalId = ${p}; fi
+				doaction ${s} `find -name DoAction.as | grep "DefineSprite_${p}_"`
+			fi
+			s=
+		else
+			if [ ${lines} -gt 0 ]; then
+				lines=$((lines-1))
+			elif [ -z "`echo ${p} | grep ,`" ]; then
+				s=${p}
+				t=
+			fi
+		fi
+	fi
+done <../${log}
+
+doaction 0 `find -maxdepth 3 -name DoAction.as`
+
+cd ..
+mv ${1} orig.${1}
+./a.out 3
+diff ${1} orig.${1}
