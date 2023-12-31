@@ -17,7 +17,7 @@ folder="${bname%.*}"
 if [ -n "${isdebug}" ]; then echo ${folder}; fi
 
 ffdec -export script ${folder} ${1} || exit 1
- 
+
 out=${folder}.dbg
 mkdir -p ${out}
 
