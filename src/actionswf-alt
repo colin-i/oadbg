@@ -36,7 +36,7 @@ doaction () {
 		f=${to}_${f:6}
 		v=
 		if [ -n "${isdebug}" ]; then v=-v; fi
-		cp ${v} ${var} ../${out}/${f}
+		mv ${v} ${var} ../${out}/${f}
 	done
 }
 s= #id
