@@ -67,7 +67,9 @@ while read p; do
 				if [ -n "${isdebug}" ]; then echo finalId = ${p}; fi
 				doaction ${s} `find -name DoAction.as | grep "DefineSprite_${p}_movie"` || { #else is a button
 					f=`find -name "BUTTONCONDACTION on(release).as" | grep "DefineButton2_${p}"` # | xargs -I {} echo "\"{}\""`; doaction ${s} "${f}" #double escape the quotes
-					move "${f}" ../${out}/${s}
+					d=../${out}/${s}
+					move "${f}" ${d}
+					sed -e '1d' -e '$d' -i ${d}  #remove on(release){ ... }
 				}
 			fi
 			s=
