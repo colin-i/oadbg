@@ -6,5 +6,4 @@
 
 GDK_BACKEND=broadway BROADWAY_DISPLAY=:0 ./oadbg
 
-#can't debug this:          browser<->(read/write std)oadbg
-#make a debugger extension: browser<->(read/write std)elf(read/write socket)<->(read/write socket)oadbg
+#this can be debugged with: sudo gdb -p pid_of_oadbg
