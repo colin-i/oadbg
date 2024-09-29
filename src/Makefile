@@ -35,3 +35,5 @@ clean:
 	-rm -f main.oc.x
 	-rm -f main.c
 	-rm -f ${proj}
+
+.PHONY: all clean
