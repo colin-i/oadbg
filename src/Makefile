@@ -21,7 +21,7 @@ all: ${proj}
 ${proj}: main.o
 	${OLINK} main.oc.log
 	@echo
-	$(CC) ${linkerflags} $< -o ${proj}
+	$(CC) ${linkerflags} $< -o ${proj} -lorb `pkg-config --libs ruby-3.5`
 	# `pkg-config --libs gtk4`
 
 %.o: %.oc
