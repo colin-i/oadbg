@@ -11,6 +11,9 @@ endif
 ifndef linkerflags
 linkerflags=-O3 -s
 endif
+ifndef compilerflags
+compilerflags=${linkerflags}
+endif
 
 OFLAGS=x_file 2
 
@@ -27,7 +30,7 @@ ${proj}: main.o
 %.o: %.oc
 	${OCOMP} $< ${OFLAGS}
 	${OCONV} $<.x
-	$(CC) -c $*.c
+	$(CC) ${compilerflags} -c -w $*.c
 
 clean:
 	-rm -f main.o

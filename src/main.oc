@@ -1,14 +1,18 @@
 
 format elfobj64
 
-importx "orb_init" orb_init
-importx "orb_cleanup" orb_cleanup
+override include_sec 1
+include "/home/bc/l/liborb/orb.h" "/home/bc/l/liborb/orb.oh"
 
 entry main()
 	call orb_init()
+	datax state#1
+	set state orb_require("tty-prompt")
+	if state=(no_error)
+	end
 	callret orb_cleanup()
 
-#how was for web, now also can use vte gui:
+#how was for web, now also can use vte gui(https://github.com/GNOME/vte)
 #const NULL=0
 #const FALSE=0
 ##const EXIT_FAILURE=1
