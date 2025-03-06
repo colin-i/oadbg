@@ -1,14 +1,17 @@
 
 format elfobj64
 
-override include_sec 1
 include "/home/bc/l/liborb/orb.h" "/home/bc/l/liborb/orb.oh"
+
+importx "rb_eval_string" rb_eval_string
 
 entry main()
 	call orb_init()
 	datax state#1
 	set state orb_require("tty-prompt")
 	if state=(no_error)
+		valueu obj#1;set obj rb_eval_string("TTY::Prompt.new") #, &state) //prompt=.. is ok but still not remembering prompt at next eval
+		#https://www.rubydoc.info/gems/tty-prompt/TTY/Prompt
 	end
 	callret orb_cleanup()
 

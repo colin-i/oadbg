@@ -15,7 +15,7 @@ ifndef compilerflags
 compilerflags=${linkerflags}
 endif
 
-OFLAGS=x_file 2
+OFLAGS=x_file 2 include_sec 1
 
 proj=oadbg
 
