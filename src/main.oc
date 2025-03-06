@@ -6,6 +6,8 @@ include "/home/bc/l/liborb/orb.h" "/home/bc/l/liborb/orb.oh"
 importx "rb_eval_string" rb_eval_string
 importx "rb_iv_get" rb_iv_get
 importx "rb_intern" rb_intern
+importx "rb_str_new_cstr" rb_str_new_cstr
+importx "orb_inst_call_varg_str" orb_inst_call_varg_str
 
 entry main()
 	call orb_init()
@@ -15,10 +17,14 @@ entry main()
 		valueu obj#1;set obj rb_eval_string("TTY::Prompt.new") #, &state) //prompt=.. is ok but still not remembering prompt at next eval
 		#https://www.rubydoc.info/gems/tty-prompt/TTY/Prompt
 		valueu reader#1;set reader rb_iv_get(obj,"@reader")
-		valueu id#1;set id rb_intern("add_to_history")
+		valueu id#1;set id rb_intern("add_to_history") #limit? DEFAULT_SIZE is 512, will add in .oadbg same
 		call orb_inst_call_arg(reader,id,"test")
 
-		#
+		set id rb_intern("ask")
+		valueu varg#1;set varg rb_str_new_cstr(">")
+		ssu str
+		set str orb_inst_call_varg_str(obj,id,varg);importx "puts" puts;call puts(str)
+		set str orb_inst_call_varg_str(obj,id,varg);call puts(str)
 	end
 	callret orb_cleanup()
 
