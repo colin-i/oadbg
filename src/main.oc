@@ -4,6 +4,8 @@ format elfobj64
 include "/home/bc/l/liborb/orb.h" "/home/bc/l/liborb/orb.oh"
 
 importx "rb_eval_string" rb_eval_string
+importx "rb_iv_get" rb_iv_get
+importx "rb_intern" rb_intern
 
 entry main()
 	call orb_init()
@@ -12,6 +14,11 @@ entry main()
 	if state=(no_error)
 		valueu obj#1;set obj rb_eval_string("TTY::Prompt.new") #, &state) //prompt=.. is ok but still not remembering prompt at next eval
 		#https://www.rubydoc.info/gems/tty-prompt/TTY/Prompt
+		valueu reader#1;set reader rb_iv_get(obj,"@reader")
+		valueu id#1;set id rb_intern("add_to_history")
+		call orb_inst_call_arg(reader,id,"test")
+
+		#
 	end
 	callret orb_cleanup()
 
