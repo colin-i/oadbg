@@ -22,7 +22,7 @@ entry main()
 
 		set id rb_intern("ask")
 		valueu varg#1;set varg rb_str_new_cstr(">")
-		ssu str
+		ss str
 		set str orb_inst_call_varg_str(obj,id,varg);importx "puts" puts;call puts(str)
 		set str orb_inst_call_varg_str(obj,id,varg);call puts(str)
 	end
