@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #GDK_BACKEND=broadway BROADWAY_DISPLAY=:0 GTK_DEBUG=all GTK_INSPECTOR_DISPLAY=:1 ./oadbg
 #"touchscreen" is only available when building GTK with G_ENABLE_DEBUG. See GTK_DEBUG=help
