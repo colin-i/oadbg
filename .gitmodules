@@ -1,0 +1,3 @@
+[submodule "liborb"]
+	path = liborb
+	url = https://github.com/colin-i/liborb.git
